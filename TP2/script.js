@@ -23,6 +23,7 @@ for (let i = 0; i < taille; i++) {
 console.log('taille:', notes.length);
 let note_minimal = 20;
 for (let i = 0; i < notes.length; i++){
+    //parcour la liste et a chaque fois qu'il trouve un chiffre plus petit le met dans la variable note_minimal
     if(note_minimal > notes[i]){
         note_minimal = notes[i];
     }
@@ -31,6 +32,7 @@ console.log('min:', note_minimal);
 
 let note_max = 0;
 for (let i = 0; i < notes.length; i++){
+    //parcour la liste et a chaque fois qu'il trouve un chiffre plus grand le met dans la variable note_max
     if(note_max < notes[i]){
         note_max = notes[i];
     }
@@ -43,6 +45,7 @@ console.log('============================================================');
 //||PARTIE 2||
 //============
 for(let i = 0; i < notes.length; i++){
+    //parcour de la liste et quand il trouve un nombre pareil que la note minimal, donne l'indice ou se trouve celui-ci 
     if (note_minimal == notes[i]){
         console.log("note minimal:", note_minimal,". Il se trouve a l'indice:", i);
     }
@@ -73,6 +76,7 @@ console.log('============================================================');
 //============
 let alt;
 let tableau_debut=[];
+//copy de la liste
 for (let i = 0; i < notes.length; i++){
     tableau_debut[i]=notes[i];
 }
@@ -82,8 +86,12 @@ let verification = 0;
 for (let i = 0; i < notes.length; i++){
     for (let j = i+1; j < notes.length; j ++){
         if(notes[i]>notes[j]){
+            //Echange de deux valeur
+            //on met dans alt la valeur qui se trouve en i
             alt=notes[i];
+            //on met dans i la valeur de j
             notes[i]=notes[j];
+            //on met dans j la valeur qui se situe dans alt
             notes[j]=alt;
             deplacement+=1;
             console.log("un echange a ete fait, le tableau ressemble a", notes);
@@ -98,6 +106,7 @@ for (let i = 0; i < notes.length; i++){
 console.log("avant", tableau_debut);
 console.log("apres", notes);
 let tableau_trie_croi = [];
+//boucle pour copier le tableau de notes
 for (let i = 0; i < notes.length; i++){
     tableau_trie_croi[i]=notes[i];
 }
