@@ -58,11 +58,13 @@ function afficherEleve(tableau_eleves){
 function trouverMoyenneMin(tableau_eleves, indexDepart){
     let moyenne_min = 20;
     let indice_min;
+    //trouver la moyenne_min avec un index de départ de indexDepart
     for (let i = indexDepart; i < tableau_eleves.length; i++){
         if (tableau_eleves[i].moyenne < moyenne_min){
             moyenne_min = tableau_eleves[i].moyenne;
         }
     }
+    //trouver l'index de la moyenne_min
     for (let i = indexDepart; i < tableau_eleves.length; i++){
         if (tableau_eleves[i].moyenne == moyenne_min){
             indice_min = i;
@@ -79,12 +81,14 @@ function afficherDonnees(tableau_eleves){
     let moyenne_max = 0;
     let count = 0;
     let indice_max
+    //trouver la moyenne_max
     for (let i = 0; i < tableau_eleves.length; i++){
         if (tableau_eleves[i].moyenne > moyenne_max){
             moyenne_max = tableau_eleves[i].moyenne;
         }
         count++;
     }
+    //trouver l'index de la moyenne_max
     for (let i = 0; i < tableau_eleves.length; i++){
         if (tableau_eleves[i].moyenne == moyenne_max){
             indice_max = i;
