@@ -85,7 +85,7 @@ class Player{
         }
         //The player is idle
         else{
-
+            this.walkSpriteIndex = 0;
         }
     // console.log("Walk animation :\n");
     // console.log("isWalking = ", this.isWalking);
@@ -105,6 +105,6 @@ class Player{
     }
 }
 AAA = new Player(1, "AAA", 1, 1, 1);
-for (let i = 0;i<10;i++){
+for (let i = 0;i<20;i++){
     AAA.animate();
 }
