@@ -66,5 +66,4 @@ form.addEventListener("submit", (event) => {
   console.log("Backend :", backend);
   console.log("Skin sélectionné :", `assets/${skinId}.png`);
 
-  // Ici tu peux lancer ton backend ou ton jeu
 });
