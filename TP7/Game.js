@@ -86,7 +86,6 @@ console.log("Initial game state:", game);
 game.update(backendData);
 
 // Simulate a player leaving and a new player joining
-const modifiedBackendData = JSON.parse(JSON.stringify(backendData));
 delete modifiedBackendData.players["3cd71bbb-6a6b-4d4e-80e3-107130328a27"];
 modifiedBackendData.players["new-player-id"] = {
    name: "AAA",
