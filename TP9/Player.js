@@ -35,17 +35,24 @@ class Player {
         this.walkSpriteIndex = 0;
         this.walkSpritesNumber = 9;
         this.currentWalkSpriteStep = 0;
-        this.walkSpriteDuration = 3;
+        this.walkSpriteDuration = 8;
 
         this.attackSpriteIndex = 0;
         this.attackSpritesNumber = 6;
         this.currentAttackSpriteStep = 0;
-        this.attackSpriteDuration = 0;
+        this.attackSpriteDuration = 6;
 
         this.deathSpriteIndex = 0;
         this.deathSpritesNumber = 6;
         this.currentDeathSpriteStep = 0;
-        this.deathSpriteDuration = 5;
+        this.deathSpriteDuration = 10;
+
+        this.newX = this.renderX;
+        this.newY = this.renderY;
+
+        this.pastX = this.newX;
+        this.pastY = this.newY;
+
     }
 
     update(updateData) {
@@ -67,6 +74,12 @@ class Player {
         this.isWalking = updateData.isWalking;
         this.isDying = updateData.isDying;
         this.skinPath = updateData.skinPath;
+
+        this.newX = updateData.renderX;
+        this.newY = updateData.renderY;
+
+        this.pastX = updateData.newX;
+        this.pastY = updateData.newY;
     }
 
     animate() {
@@ -144,5 +157,9 @@ class Player {
             // We just select the first sprite of its walking animation
             this.walkSpriteIndex = 0;
         }
+    }
+    interpolate(alpha){
+        this.renderX = this.pastX + ((this.newX - this.newX) * alpha);
+        this.renderY = this.pastY + ((this.newY - this.newY) * alpha);
     }
 }

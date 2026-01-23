@@ -4,12 +4,8 @@ class GameController {
         this.SERVER_TICK_RATE = 20;
         // Duration between two server ticks in milliseconds
         this.SERVER_INTERVAL = 1000 / this.SERVER_TICK_RATE;
-        // Permanently bind "this" at the instance of the GameController class
-        this.loop = this.loop.bind(this);
-        // Regulates framerate to keep 60fps
-        requestAnimationFrame(this.loop);
-
-        this.data_Game = new Game;
+        
+        this.data_Game = new Game();
 
         this.serverUrl = localStorage.getItem("backend");
         this.skinPath = localStorage.getItem("skinPath");
@@ -24,13 +20,28 @@ class GameController {
         };
 
         this.socket = new WebSocket(this.serverUrl);
-        this.gameView = new GameView;
-        // this.gameView.drawBackground();
+        this.gameView = new GameView(this.data_Game);
+
+
+        // Permanently bind "this" at the instance of the GameController class
+        this.loop = this.loop.bind(this);
+        // Regulates framerate to keep 60fps
+        requestAnimationFrame(this.loop);
+
     }
     // === Main render loop ===
     loop(timestamp) {
+        const alpha = Math.min( (timestamp - this.lastServerUpdate) / this.SERVER_INTERVAL, 1);
+        this.data_Game.players.forEach(player =>{
+            player.interpolate(alpha);
+            player.animate();
+        });
+
+        this.gameView.render();
         // Request the next frame
         requestAnimationFrame(this.loop);
+        
+
     }
     initSocket(){
         this.socket.onopen = () => {
@@ -49,56 +60,57 @@ class GameController {
     initInput(){
         window.addEventListener("keydown", (e) =>{
             switch(e.key){
-                case "w":
+                case "z":
                     this.inputState.up = true;
-                    console.log(this.inputState);
+                    // console.log(this.inputState.up);
                     break;
-                case "a":
+                case "q":
                     this.inputState.left = true;
-                    console.log(this.inputState);
+                    // console.log(this.inputState.left);
                     break;
                 case "s":
                     this.inputState.down = true;
-                    console.log(this.inputState);
+                    // console.log(this.inputState.down);
                     break;
                 case "d":
                     this.inputState.right = true;
-                    console.log(this.inputState);
+                    // console.log(this.inputState.right);
                     break;
+                // case " ":
+                //     this.inputState.attack = true;
+                //     break;
             }
         });
-        window.addEventListener("click", (e) =>{
-            if(e.button === 0){
-                this.inputState.attack = true;
-                console.log(this.inputState);
-            }
-        });
+        // window.addEventListener("click", (e) =>{
+        //     if(e.button === 0){
+        //         this.inputState.attack = true;
+        //         // console.log(this.inputState.attack);
+        //     }
+        // });
         window.addEventListener("keyup", (e) =>{
             switch(e.key){
-                case "w":
+                case "z":
                     this.inputState.up = false;
-                    console.log(this.inputState);
                     break;
-                case "a":
+                case "q":
                     this.inputState.left = false;
-                    console.log(this.inputState);
                     break;
                 case "s":
                     this.inputState.down = false;
-                    console.log(this.inputState);
                     break;
                 case "d":
                     this.inputState.right = false;
-                    console.log(this.inputState);
+                    break;
+                case " ":
+                    this.inputState.attack = false;
                     break;
             }
         });
-        window.addEventListener("click", (e) =>{
-            if(e.button === 0){
-                this.inputState.attack = false;
-                console.log(this.inputState);
-            }
-        });
+        // window.addEventListener("click", (e) =>{
+        //     if(e.button === 0){
+        //         this.inputState.attack = false;
+        //     }
+        // });
     }
     startInputSender() {
         setInterval(() => {
