@@ -4,7 +4,7 @@ class GameController {
         this.SERVER_TICK_RATE = 20;
         // Duration between two server ticks in milliseconds
         this.SERVER_INTERVAL = 1000 / this.SERVER_TICK_RATE;
-        
+
         this.data_Game = new Game();
 
         this.serverUrl = localStorage.getItem("backend");
@@ -22,6 +22,7 @@ class GameController {
         this.socket = new WebSocket(this.serverUrl);
         this.gameView = new GameView(this.data_Game);
 
+        this.lastServerUpdate = performance.now();
 
         // Permanently bind "this" at the instance of the GameController class
         this.loop = this.loop.bind(this);
@@ -32,21 +33,21 @@ class GameController {
     // === Main render loop ===
     loop(timestamp) {
         const alpha = Math.min( (timestamp - this.lastServerUpdate) / this.SERVER_INTERVAL, 1);
-        this.data_Game.players.forEach(player =>{
-            player.interpolate(alpha);
-            player.animate();
-        });
-
+        for (let player in this.data_Game.players){
+            this.data_Game.players[player].interpolate(alpha);
+        }
+        //console.log(alpha);
+        this.gameView.createImg();
         this.gameView.render();
         // Request the next frame
         requestAnimationFrame(this.loop);
-        
+
 
     }
     initSocket(){
         this.socket.onopen = () => {
             console.log("Connected to server");
-            
+
             this.socket.send(JSON.stringify({
                 name: this.pseudo,
                 skinPath: this.skinPath
@@ -55,6 +56,7 @@ class GameController {
         this.socket.onmessage = (e) => {
             console.log("Got the message");
             this.data_Game.update(JSON.parse(e.data));
+            this.lastServerUpdate = performance.now();
         }
     }
     initInput(){
@@ -76,17 +78,14 @@ class GameController {
                     this.inputState.right = true;
                     // console.log(this.inputState.right);
                     break;
-                // case " ":
-                //     this.inputState.attack = true;
-                //     break;
+                case " ":
+                    this.inputState.attack = true;
+                    break;
+                case "m":
+                    this.data_Game.hp = 0;
+                    break;
             }
         });
-        // window.addEventListener("click", (e) =>{
-        //     if(e.button === 0){
-        //         this.inputState.attack = true;
-        //         // console.log(this.inputState.attack);
-        //     }
-        // });
         window.addEventListener("keyup", (e) =>{
             switch(e.key){
                 case "z":
@@ -103,6 +102,9 @@ class GameController {
                     break;
                 case " ":
                     this.inputState.attack = false;
+                    break;
+                case "m":
+                    this.data_Game.hp = 0;
                     break;
             }
         });

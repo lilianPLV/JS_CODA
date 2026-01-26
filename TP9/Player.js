@@ -14,10 +14,6 @@ class Player {
         // Path to the spritesheet used to represent the player (idem)
         this.skinPath = skinPath;
 
-        // --- RENDER positions ---
-        this.renderX = position[0];
-        this.renderY = position[1];
-
         // --- Stats ---
         this.lvl = 1;
         this.hp = 100;
@@ -25,7 +21,7 @@ class Player {
         this.speed = 0.2;
 
         // --- Direction & states ---
-        this.direction = directions.south;
+        this.direction = 2;
         this.isWalking = false;
         this.isAttacking = false;
         this.isDying = false;
@@ -47,8 +43,12 @@ class Player {
         this.currentDeathSpriteStep = 0;
         this.deathSpriteDuration = 10;
 
-        this.newX = this.renderX;
-        this.newY = this.renderY;
+        // --- RENDER positions ---
+        this.renderX = position[0];
+        this.renderY = position[1];
+
+        this.newX = position[0];
+        this.newY = position[1];
 
         this.pastX = this.newX;
         this.pastY = this.newY;
@@ -58,7 +58,9 @@ class Player {
     update(updateData) {
 
         // Update authoritative position
-        [this.renderX, this.renderY] = updateData.position;
+        this.pastX = this.newX;
+        this.pastY = this.newY;
+        [this.newX, this.newY] = updateData.position;
 
         // Update stats
         this.name = updateData.name
@@ -75,11 +77,6 @@ class Player {
         this.isDying = updateData.isDying;
         this.skinPath = updateData.skinPath;
 
-        this.newX = updateData.renderX;
-        this.newY = updateData.renderY;
-
-        this.pastX = updateData.newX;
-        this.pastY = updateData.newY;
     }
 
     animate() {
@@ -159,7 +156,7 @@ class Player {
         }
     }
     interpolate(alpha){
-        this.renderX = this.pastX + ((this.newX - this.newX) * alpha);
-        this.renderY = this.pastY + ((this.newY - this.newY) * alpha);
+        this.renderX = this.pastX + (this.newX - this.pastX) * alpha;
+        this.renderY = this.pastY + (this.newY - this.pastY) * alpha;
     }
 }

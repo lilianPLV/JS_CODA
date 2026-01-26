@@ -9,7 +9,7 @@ class GameView{
         this.canvas = document.querySelector("canvas");
         this.ctx = this.canvas.getContext("2d");
 
-
+        this.imgs = {};
     }
     clear(){
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -22,75 +22,52 @@ class GameView{
     render(){
         this.clear();
         this.drawBackground();
-
         for (const id in this.game.players){
-            const player = this.game.players[id];
-            player.animate();
-            this.drawPlayer(player);
+            this.drawPlayer(this.game.players[id]);
         }
     }
-
+    createImg(){
+        for(let player in this.game.players){
+            this.imgs[player] = new Image();
+            this.imgs[player].src = this.game.players[player].skinPath;
+        }
+    }
+    
     drawPlayer(player){
-        let FRAME_ROW = 10;
+        this.imgs[player] = new Image();
+        this.imgs[player].src = player.skinPath;
+        player.animate();
         let FRAME_ROW_ATTACK = 18;
-        const img = new Image();
-        img.src = player.skinPath;
+        let img = this.imgs[player.id];
+        let dir = player.direction;
+
+        if (player.direction === 1) dir = 3;
+        else if(player.direction === 3) dir = 1;
+
+        let cropX = 64;
+        let cropY = 64 * (8 + dir);
+
+        let cropDeathY = 64 * 20;
 
         if(player.isWalking){
-            if(player.direction === 0){
-                FRAME_ROW = 8;
-            }
-            else if(player.direction === 3){
-                FRAME_ROW = 9;
-            }
-            else if(player.direction === 2){
-                FRAME_ROW = 10;
-            }
-            else if(player.direction === 1){
-                FRAME_ROW = 11;
+            cropX *= player.walkSpriteIndex;
+        }
+
+        if(player.isDying){
+            if(this.game.player.hp === 0){
+                cropDeathY *= player.deathSpriteIndex;
             }
         }
-        else if(player.isDying){
-            if(player.hp >= 0){
-                FRAME_ROW = 20;
-            }
+
+        if(player.isAttacking){
+            cropX = 192 * player.attackSpriteIndex;
+            cropY = 192 * ((54 + dir) * 3);
         }
-        else if(player.isAttacking){
-            if(player.direction === 0){
-                FRAME_ROW_ATTACK = 18;
-            }
-            else if(player.direction === 3){
-                FRAME_ROW_ATTACK = 19;
-            }
-            else if(player.direction === 2){
-                FRAME_ROW_ATTACK = 20;
-            }
-            else if(player.direction === 1){
-                FRAME_ROW_ATTACK = 21;
-            }
-            else{
-                player.direction = player.direction;
-            }
-        }
-        // if(player.isAttacking){
-        //     this.ctx.drawImage(
-        //         img,
-        //         player.attackSpriteIndex * this.FRAME_WIDTH_ATTACK,
-        //         FRAME_ROW_ATTACK * this.FRAME_HEIGHT_ATTACK,
-        //         this.FRAME_WIDTH_ATTACK,
-        //         this.FRAME_HEIGHT_ATTACK,
-        //         player.renderX * this.canvas.width,
-        //         player.renderY * this.canvas.height,
-        //         this.FRAME_WIDTH_ATTACK,
-        //         this.FRAME_HEIGHT_ATTACK
-        //     );
-        // }
-        
-        // else if(!player.isAttacking){
+
         this.ctx.drawImage(
             img,
-            player.walkSpriteIndex * this.FRAME_WIDTH,
-            FRAME_ROW * this.FRAME_HEIGHT,
+            cropX,
+            cropY,
             this.FRAME_WIDTH,
             this.FRAME_HEIGHT,
             player.renderX * this.canvas.width,
@@ -98,6 +75,5 @@ class GameView{
             this.FRAME_WIDTH,
             this.FRAME_HEIGHT
         );
-        // }
     }
 }
