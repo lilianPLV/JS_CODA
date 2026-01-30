@@ -1,0 +1,129 @@
+ * {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-image: url(back.jpg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.portal-wrapper {
+  width: 100%;
+  max-width: 480px;
+  padding: 1rem;
+}
+
+.portal-card {
+  background: rgba(15, 25, 80, 0.9);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 0 30px rgba(0, 150, 255, 0.2),
+    inset 0 0 30px rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+}
+
+.portal-card h2 {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.game-input {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.game-input::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+.game-input:focus {
+  background: rgba(0,0,0,0.6);
+  border-color: #3fa9f5;
+  box-shadow: 0 0 0 0.15rem rgba(63,169,245,0.25);
+  color: white;
+}
+
+.sprite-container {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.sprite-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 0.6rem;
+}
+
+.sprite-item {
+  background: rgba(0,0,0,0.4);
+  border-radius: 0.75rem;
+  padding: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sprite-item:hover {
+  transform: scale(1.08);
+  border-color: rgba(63,169,245,0.6);
+  box-shadow: 0 0 10px rgba(63,169,245,0.4);
+}
+
+.sprite-item.active {
+  border-color: #3fa9f5;
+  box-shadow:
+    0 0 12px rgba(63,169,245,0.8),
+    inset 0 0 10px rgba(63,169,245,0.4);
+}
+
+.btn-play {
+  background: linear-gradient(135deg, #3fa9f5, #0066ff);
+  border: none;
+  border-radius: 0.9rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 0.8rem;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.btn-play:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 102, 255, 0.4);
+}
+
+.btn-play:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0, 102, 255, 0.4);
+}
+
+.sprite-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sprite-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}

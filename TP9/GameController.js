@@ -41,8 +41,6 @@ class GameController {
         this.gameView.render();
         // Request the next frame
         requestAnimationFrame(this.loop);
-
-
     }
     initSocket(){
         this.socket.onopen = () => {
@@ -81,9 +79,6 @@ class GameController {
                 case " ":
                     this.inputState.attack = true;
                     break;
-                case "m":
-                    this.data_Game.hp = 0;
-                    break;
             }
         });
         window.addEventListener("keyup", (e) =>{
@@ -102,9 +97,6 @@ class GameController {
                     break;
                 case " ":
                     this.inputState.attack = false;
-                    break;
-                case "m":
-                    this.data_Game.hp = 0;
                     break;
             }
         });

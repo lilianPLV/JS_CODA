@@ -37,7 +37,7 @@ class Game {
             const key = `${p.renderX},${p.renderY}`;
 
             if (this.lastPositions[id] !== key) {
-            console.log( `X:${p.renderX} Y:${p.renderY}`);
+            // console.log( `X:${p.renderX} Y:${p.renderY}`);
             this.lastPositions[id] = key;
             }
          }
